@@ -3,93 +3,28 @@ function Node(data) {
     this.next = null;
 }
 
-function SinglyList() {
-    this._length = 0;
-    this.head = null;
+function LinkedList() {
+  // head will be the top of the list
+  // we'll define it as null for now
+  this.head = null;
+  this.length = 0;
+
+    this.add = function(data) {
+    var nodeToAdd = new Node(data),
+        nodeToCheck = this.head;
+    // if the head is null
+    if(!nodeToCheck) {
+      this.head = nodeToAdd;
+      this.length++;
+      return nodeToAdd;
+    }
+    // loop until we find the end
+    while(nodeToCheck.next) {
+      nodeToCheck = nodeToCheck.next;
+    }
+    // once were at the end of the list
+    nodeToCheck.next = nodeToAdd;
+    this.length++;
+    return nodeToAdd;
+  }
 }
-
-SinglyList.prototype.add = function(value) {
-    var node = new Node(value),
-        currentNode = this.head;
-
-    // 1st use-case: an empty list
-    if (!currentNode) {
-        this.head = node;
-        this._length++;
-
-        return node;
-    }
-
-    // 2nd use-case: a non-empty list
-    while (currentNode.next) {
-        currentNode = currentNode.next;
-    }
-
-    currentNode.next = node;
-
-    this._length++;
-
-    return node;
-};
-
-SinglyList.prototype.searchNodeAt = function(position) {
-    var currentNode = this.head,
-        length = this._length,
-        count = 1,
-        message = {failure: 'Failure: non-existent node in this list.'};
-
-    // 1st use-case: an invalid position
-    if (length === 0 || position < 1 || position > length) {
-        throw new Error(message.failure);
-    }
-
-    // 2nd use-case: a valid position
-    while (count < position) {
-        currentNode = currentNode.next;
-        count++;
-    }
-
-    return currentNode;
-};
-
-SinglyList.prototype.remove = function(position) {
-    var currentNode = this.head,
-        length = this._length,
-        count = 0,
-        message = {failure: 'Failure: non-existent node in this list.'},
-        beforeNodeToDelete = null,
-        nodeToDelete = null,
-        deletedNode = null;
-
-    // 1st use-case: an invalid position
-    if (position < 0 || position > length) {
-        throw new Error(message.failure);
-    }
-
-    // 2nd use-case: the first node is removed
-    if (position === 1) {
-        this.head = currentNode.next;
-        deletedNode = currentNode;
-        currentNode = null;
-        this._length--;
-
-        return deletedNode;
-    }
-
-    // 3rd use-case: any other node is removed
-    while (count < position) {
-        beforeNodeToDelete = currentNode;
-        nodeToDelete = currentNode.next;
-        count++;
-    }
-
-    beforeNodeToDelete.next = nodeToDelete.next;
-    deletedNode = nodeToDelete;
-    nodeToDelete = null;
-    this._length--;
-
-    return deletedNode;
-};
-
-
-export default SinglyList;
